@@ -12,4 +12,36 @@
  * @package         Woocommerce_Request_For_Reviews
  */
 
-// Your code starts here.
+add_filter(
+	'query_vars',
+	function( $vars ) {
+		$vars[] = 'wcrr-review';
+		return $vars;
+	},
+	0
+);
+
+add_action(
+	'init',
+	function() {
+		add_rewrite_rule( 'add-review\/([a-z0-9]+)[\/]?$', 'index.php?wcrr-review=$matches[1]', 'top' );
+	},
+	10,
+	0
+);
+
+add_action(
+	'parse_request',
+	function( $query ) {
+		global $wp;
+
+		if ( ! $wp->query_vars['wcrr-review'] ) {
+			return;
+		}
+
+		$review_hash = $wp->query_vars['wcrr-review'];
+
+		// 1. Find the order associated with the hash.
+		// 2. Load the review form.
+	}
+);
